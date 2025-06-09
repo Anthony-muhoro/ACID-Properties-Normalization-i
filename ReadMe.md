@@ -48,6 +48,7 @@ Durability ensures that transactions, once committed, will survive permanently. 
   2.  Second Normal Form (2NF):
 
   3.  Third Normal Form (3NF):
+  4.  BCNF - Boyce and Codd Normal Form
 
 ## 1NF - First Normal Form
 
@@ -57,6 +58,82 @@ ensures there are no two same entries in a group. For a table to be in the first
 - Each record should be unique
 
 the table
+<style>
+.table_component {
+    overflow: auto;
+    width: 100%;
+}
+
+.table_component table {
+    border: 1px solid #dededf;
+    height: 100%;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 1px;
+    text-align: left;
+}
+
+.table_component caption {
+    caption-side: top;
+    text-align: left;
+}
+
+.table_component th {
+    border: 1px solid #dededf;
+    background-color: #eceff1;
+    color: #000000;
+    padding: 5px;
+}
+
+.table_component td {
+    border: 1px solid #dededf;
+    background-color: #ffffff;
+    color: #000000;
+    padding: 5px;
+}
+</style>
+
+<div class="table_component" role="region" tabindex="0">
+<table>
+    <caption>Table 1</caption>
+    <thead>
+        <tr>
+            <th>Salutation</th>
+            <th>Full Name</th>
+            <th>Address</th>
+            <th>Skills</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Mr.</td>
+            <td>Mr.</td>
+            <td>Mr.</td>
+            <td>Mr.</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+</div>
 
 ## 2NF - Second Normal Form
 
