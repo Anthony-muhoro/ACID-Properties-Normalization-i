@@ -1,160 +1,137 @@
 # ACID Properties & Normalization
 
+---
+
 ## ACID Properties
 
-- ACID stands for Atomicity Consistency Isolation Durability.
+ACID stands for **Atomicity, Consistency, Isolation, Durability**. These are key properties that guarantee reliable processing of database transactions.
 
-1. Atomicity: It makes sure that all commands that are part of the transaction must be executed successfully. If not, then the whole transaction should be canceled and rolled back to the previous state using the ROLLBACK command.
+### 1. Atomicity
 
-- For example, transferring money from one bank account involves multiple steps:
+Atomicity ensures that all commands within a transaction are executed successfully. If any command fails, the entire transaction is canceled and rolled back to its previous state using the `ROLLBACK` command.
 
-Debit amount X from Account A
-Credit amount X to Account B
-As per atomicity, either all debit and credit operations succeed or they all fail. If the debit succeeds, but the credit fails for any reason, the entire transaction is rolled back. Atomicity ensures there are no partial or incomplete transactions.
+**Example:**
 
-Atomicity prevents unwanted data updates from unconcluded transactions. Without it, the debit may persist while the credit fails, causing data inconsistency. By reverting partial transactions, atomicity keeps the database consistent.
+Transferring money from one bank account involves multiple steps:
 
-2. Consistency: It makes sure that once the transaction is committed successfully then, only the database should change and save the state. It allows you to protect your data from crashes.
+- Debit amount X from Account A
+- Credit amount X to Account B
 
-- For example, a transaction crediting 5000 to a bank account with a current balance of 3000 is invalid if the account has an overdraft limit of 1000. The transaction violates consistency by exceeding the permissible account limit. Hence, it is blocked and aborted.
+Atomicity ensures either all debit and credit operations succeed or all fail. If the debit succeeds but the credit fails, the entire transaction is rolled back to avoid partial updates and maintain data consistency.
 
-Consistency enforcement prevents data corruption and invalid entries. Only transactions abiding by consistency rules are committed to upholding data accuracy. Real-world business constraints are modeled into the database via consistency.
+---
 
-3. Isolation: It makes sure that each transaction is working independently and isolated from other transactions. It also checks whether the commands are transparent to each other or not.
+### 2. Consistency
 
-For instance, if Transaction T1 updates a row, Transaction T2 must wait until T1 commits or rolls back. Isolation prevents T2 from reading unreliable data updated by T1 but not committed yet.
+Consistency ensures that once a transaction is successfully committed, only valid data according to database rules is saved. It protects the data from corruption due to crashes or invalid transactions.
 
-Isolation avoids concurrency issues like:
+**Example:**
 
-Dirty reads - Reading uncommitted data from other transactions
-Lost updates - Overwriting another transaction's uncommitted updates
-Non-repeatable reads - Same query yielding different results across transactions
-By isolating transactions, consistency is maintained despite concurrent execution and updates. Changes remain isolated until permanent.
+A transaction crediting 5000 to a bank account with a current balance of 3000 and an overdraft limit of 1000 would be invalid because it exceeds the allowed limit. Such transactions are blocked to maintain consistency.
 
-4. <h3>Durability</h3>It makes sure that once the transaction is committed, even if the database crashes or fails, it should still be saved in the database.
+---
 
-- if a transaction updates a customer's address, durability ensures the updated address is not lost due to a hard disk failure or power outage. The change will persist with the help of storage devices, backups, and logs.
+### 3. Isolation
 
-Durability ensures that transactions, once committed, will survive permanently. Failed hardware, power loss, and even database crashes will not undo committed transactions due to durability support.
+Isolation guarantees that transactions execute independently without interference. One transaction's uncommitted changes are invisible to others, preventing concurrency issues.
 
-## Normalization:
+**Example:**
 
-- it is the process of developing clean data. This includes eliminating redundant and unstructured data and making the data appear similar across all records and fields.
+If Transaction T1 updates a row, Transaction T2 must wait until T1 commits or rolls back before reading that row. Isolation avoids problems like:
 
-- Normalization is carried out in stages known as normal forms:
+- **Dirty reads:** Reading uncommitted data
+- **Lost updates:** Overwriting uncommitted changes from other transactions
+- **Non-repeatable reads:** Same query returning different results in one transaction
 
-  1.  First Normal Form (1NF):
+---
 
-  2.  Second Normal Form (2NF):
+### 4. Durability
 
-  3.  Third Normal Form (3NF):
-  4.  BCNF - Boyce and Codd Normal Form
+Durability ensures that once a transaction is committed, its changes are permanent, even in case of hardware failure, power loss, or crashes.
+
+**Example:**
+
+If a transaction updates a customer's address, durability guarantees the updated address is saved and not lost, thanks to storage mechanisms like logs, backups, and persistent storage.
+
+---
+
+## Normalization
+
+Normalization is the process of organizing data in a database to reduce redundancy and improve data integrity. It involves decomposing tables into smaller, well-structured tables according to rules called **normal forms**.
+
+### Objectives of Normalization
+
+- Eliminate redundant data
+- Ensure logical data dependencies
+
+---
+
+### Normal Forms
+
+Normalization progresses through stages:
+
+1. **First Normal Form (1NF)**
+2. **Second Normal Form (2NF)**
+3. **Third Normal Form (3NF)**
+4. **Boyce-Codd Normal Form (BCNF)**
+
+---
 
 ## 1NF - First Normal Form
 
-ensures there are no two same entries in a group. For a table to be in the first normal form, it should satisfy the following rules:
+1NF requires that:
 
-- Each cell should contain a single value
-- Each record should be unique
+- Each cell contains a single atomic value.
+- Each record is unique (no duplicate rows).
 
-the table
-<style>
-.table_component {
-    overflow: auto;
-    width: 100%;
-}
+**Example Table:**
 
-.table_component table {
-    border: 1px solid #dededf;
-    height: 100%;
-    width: 100%;
-    table-layout: fixed;
-    border-collapse: collapse;
-    border-spacing: 1px;
-    text-align: left;
-}
+| Salutation | Full Name | Address | Skills       |
+|------------|------------|---------|--------------|
+| Mr.        | John Doe   | Address1| Java, Python |
+| Ms.        | Jane Smith | Address2| SQL          |
 
-.table_component caption {
-    caption-side: top;
-    text-align: left;
-}
+*Note:* Skills column should be split into atomic values to satisfy 1NF.
 
-.table_component th {
-    border: 1px solid #dededf;
-    background-color: #eceff1;
-    color: #000000;
-    padding: 5px;
-}
-
-.table_component td {
-    border: 1px solid #dededf;
-    background-color: #ffffff;
-    color: #000000;
-    padding: 5px;
-}
-</style>
-
-<div class="table_component" role="region" tabindex="0">
-<table>
-    <caption>Table 1</caption>
-    <thead>
-        <tr>
-            <th>Salutation</th>
-            <th>Full Name</th>
-            <th>Address</th>
-            <th>Skills</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Mr.</td>
-            <td>Mr.</td>
-            <td>Mr.</td>
-            <td>Mr.</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </tbody>
-</table>
-
-</div>
+---
 
 ## 2NF - Second Normal Form
 
-In a 2NF table, all the subsets of data that can be placed in multiple rows are placed in separate tables. For a table to be in the second normal form, it should satisfy the following rules:
+To be in 2NF, a table must:
 
-- It should be in 1F
-- The primary key should not be functionally dependant on any subset of candidate key
+- Be in 1NF.
+- Have no partial dependency of any column on a part of the primary key (only on the whole key).
+
+This means all non-key attributes must depend on the entire primary key.
+
+---
 
 ## 3NF - Third Normal Form
 
-For a table to be in the third normal form, it should satisfy the following rules:
+To be in 3NF, a table must:
 
-- It should be in 2F
-- It should not have any transitive functional dependencies
+- Be in 2NF.
+- Have no transitive dependencies (non-key attributes depending on other non-key attributes).
 
-A transitive functional dependency is when a change in a column (which is not a primary key) may cause any of the other columns to change.
+*Transitive dependency* example: A change in one non-key column causes another non-key column to change.
 
-## BCNF - Boyce and Codd Normal Form
+---
 
-Boyce and Codd Normal Form is a higher version of 3NF and is also known as 3.5NF. A BCNF is a 3NF table that does not have multiple overlapping candidate keys. <br>
-For a table to be in BCNF, it should satisfy the following rules:<br>
+## BCNF - Boyce-Codd Normal Form
 
-- It should be in 3F
-- For each functional dependency ( X → Y ), X should be a super key
+BCNF is a stricter version of 3NF, sometimes called 3.5NF.
+
+For a table to be in BCNF:
+
+- It must be in 3NF.
+- For every functional dependency (X  → Y), \(X\) must be a super key.
+
+This resolves anomalies related to multiple overlapping candidate keys.
+
+---
+
+# Summary
+
+ACID properties ensure transactional reliability and data integrity during operations, while normalization improves database design by reducing redundancy and improving consistency.
+
+Together, they are fundamental concepts in designing robust, efficient, and reliable database systems.
