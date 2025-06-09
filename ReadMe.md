@@ -84,12 +84,13 @@ Normalization progresses through stages:
 - Each cell contains a single atomic value.
 - Each record is unique (no duplicate rows).
 
-**Example Table:**
+**The table in 1NF will look like this:**
 
 | Salutation | Full Name | Address | Skills       |
 |------------|------------|---------|--------------|
 | Mr.        | John Doe   | Address1| Java, Python |
 | Ms.        | Jane Smith | Address2| SQL          |
+|Ms.         |Alexa       | Adress 3| content writing|             |
 
 *Note:* Skills column should be split into atomic values to satisfy 1NF.
 
@@ -101,6 +102,14 @@ To be in 2NF, a table must:
 
 - Be in 1NF.
 - Have no partial dependency of any column on a part of the primary key (only on the whole key).
+
+- Let’s divide the 1NF table into two tables - Table 1 and Table 2. Table 1 contains all the employee information. Table 2 contains information on their key skills.
+<b>Table 1<b/>
+
+| salutation | fullName | adress |
+|------------|----------|--------|
+|mr.         | John Doe |
+
 
 This means all non-key attributes must depend on the entire primary key.
 
@@ -124,7 +133,7 @@ BCNF is a stricter version of 3NF, sometimes called 3.5NF.
 For a table to be in BCNF:
 
 - It must be in 3NF.
-- For every functional dependency (X  → Y), \(X\) must be a super key.
+- For each functional dependency ( X → Y ), X should be a super key
 
 This resolves anomalies related to multiple overlapping candidate keys.
 
